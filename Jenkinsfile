@@ -1,6 +1,6 @@
-@Library('jenkins-shared-library@devpi-function') _
+@Library('jenkins-shared-library@master') _
 
-def mainBranch = 'PR-7'
+def mainBranch = 'master'
 
 standardBuild(
   version: 2,
