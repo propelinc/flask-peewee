@@ -1,6 +1,6 @@
 @Library('jenkins-shared-library@devpi-function') _
 
-def mainBranch = 'master'
+def mainBranch = 'PR-7'
 
 standardBuild(
   version: 2,
@@ -12,7 +12,7 @@ standardBuild(
 
   // Upload flask-peewee to private devpi repository
   stage("Upload flask-peewee") {
-    if (BRANCH_NAME == image.branch) {
+    if (BRANCH_NAME == mainBranch) {
       utils.uploadPyModule(path: ".")
     }
   }
