@@ -8,3 +8,4 @@ pytest==6.2.4
 wtf-peewee==3.0.0
 WTForms==2.2.1
 flake8
+markupsafe==2.0.1
