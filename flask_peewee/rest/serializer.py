@@ -33,9 +33,9 @@ class Serializer(object):
 
     def format_datetime(self, value):
         if self.datetime_formatter == 'timestamp_ms':
-            return int(datetime.datetime.timestamp(value) * 1000)
+            return int(value.timestamp() * 1000)
         if self.datetime_formatter == 'timestamp':
-            return int(datetime.datetime.timestamp(value))
+            return int(value.timestamp())
         return value.strftime(self.datetime_format)
 
     def clean_data(self, data):
