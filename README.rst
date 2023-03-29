@@ -2,7 +2,7 @@ flask-peewee
 ============
 
 .. image:: https://img.shields.io/badge/License-MIT%20License-blue.svg
-  :target: https://raw.githubusercontent.com/rammie/flask-peewee/master/LICENSE
+  :target: https://raw.githubusercontent.com/propelinc/flask-peewee/main/LICENSE
 
 .. image:: https://github.com/propelinc/flask-peewee/actions/workflows/tests.yaml/badge.svg?branch=main
   :target: https://github.com/propelinc/flask-peewee/actions/workflows/tests.yaml?branch=main

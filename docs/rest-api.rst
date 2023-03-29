@@ -337,7 +337,7 @@ It is fine to modify our own message, though (message with id=1):
     
     # prints 200
 
-Under-the-hood, the `implementation <https://github.com/coleifer/flask-peewee/blob/master/flask_peewee/rest.py#L284>`_ of the :py:class:`RestrictOwnerResource` is pretty simple.
+Under-the-hood, the `implementation <https://github.com/propelinc/flask-peewee/blob/main/flask_peewee/rest.py#L284>`_ of the :py:class:`RestrictOwnerResource` is pretty simple.
 
 * PUT / DELETE -- verify the authenticated user is the owner of the object
 * POST -- assign the authenticated user as the owner of the new object

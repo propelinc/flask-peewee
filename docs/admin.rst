@@ -69,7 +69,7 @@ To get started with the admin, there are just a couple steps:
 Customizing how models are displayed
 ------------------------------------
 
-We'll use the "Message" model taken from the `example app <https://github.com/coleifer/flask-peewee/tree/master/example>`_,
+We'll use the "Message" model taken from the `example app <https://github.com/propelinc/flask-peewee/tree/main/example>`_,
 which looks like this:
 
 .. code-block:: python
@@ -224,7 +224,7 @@ Some example use-cases for AdminPanels might be:
   for example a mailing-list app.
 * Control global site settings, turn on and off features, etc.
 
-Referring to the `example app <https://github.com/coleifer/flask-peewee/tree/master/example>`_,
+Referring to the `example app <https://github.com/propelinc/flask-peewee/tree/main/example>`_,
 we'll look at a simple panel that allows administrators to leave "notes" in the admin area:
 
 .. image:: fp-note-panel.jpg

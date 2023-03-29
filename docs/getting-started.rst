@@ -12,7 +12,7 @@ further ado, let's get started.
     should help you get started.
 
 .. note::
-    For a complete example project, check the `example app <https://github.com/coleifer/flask-peewee/tree/master/example>`_
+    For a complete example project, check the `example app <https://github.com/propelinc/flask-peewee/tree/main/example>`_
     that ships with flask-peewee.
 
 
