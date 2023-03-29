@@ -4,8 +4,8 @@ flask-peewee
 .. image:: https://img.shields.io/badge/License-MIT%20License-blue.svg
   :target: https://raw.githubusercontent.com/rammie/flask-peewee/master/LICENSE
 
-.. image:: https://api.travis-ci.org/rammie/flask-peewee.png?branch=master
-  :target: https://travis-ci.org/rammie/flask-peewee
+.. image:: https://github.com/propelinc/flask-peewee/actions/workflows/tests.yaml/badge.svg?branch=main
+  :target: https://github.com/propelinc/flask-peewee/actions/workflows/tests.yaml?branch=main
 
 This fork is different in the following ways:
 
