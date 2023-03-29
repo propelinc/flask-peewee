@@ -3,7 +3,7 @@ import io as StringIO
 import pytz
 
 from flask import request
-from peewee import fn, R, ForeignKeyField, ReverseRelationDescriptor
+from peewee import fn, SQL, ForeignKeyField, BackrefAccessor
 from peewee import ProgrammingError, DataError
 from playhouse.postgres_ext import ArrayField, JSONField
 
@@ -12,7 +12,7 @@ from . import RestResource
 
 class StatsQueryBuilder(object):
 
-    relationship = (ForeignKeyField, ReverseRelationDescriptor)
+    relationship = (ForeignKeyField, BackrefAccessor)
 
     aggregator_map = {
         "count": fn.Count,
@@ -51,7 +51,7 @@ class StatsQueryBuilder(object):
         return model_attr, piece, subjoins
 
     def process_timefields(self, binsize, timefield, timezone):
-        timefield_sql = R("t1.\"%s\" AT TIME ZONE '%s'" % (timefield, timezone))
+        timefield_sql = SQL("t1.\"%s\" AT TIME ZONE '%s'" % (timefield, timezone))
         self.selector = fn.date_trunc(binsize, timefield_sql)
         self.group_by_fields.append(self.selector)
         self.selected_fields.append(self.selector.alias(timefield))
@@ -151,6 +151,8 @@ class StatsMixin(object):
             json_lookup = model_attr
 
         query = self.model.select(fn.DISTINCT(fn.jsonb_object_keys(json_lookup)).alias('key'))
+        query = self.prepare_joins(query)
+        query = self.process_query(query)
 
         try:
             keys = [row["key"] for row in query.dicts()]
