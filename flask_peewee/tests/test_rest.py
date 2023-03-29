@@ -555,6 +555,29 @@ class RestApiResourceTestCase(RestApiTestCase):
         f_obj = FModel.get(id=self.f1.id)
         self.assertEqual(f_obj.e, None)
 
+    def test_stats(self):
+        # test that stats mixin supports getting count
+        resp = self.app.get('/api/jmodel/stats/')
+        self.assertEqual(
+            resp.get_json(),
+            {'meta': {'aliases': ['count_id']}, 'objects': [{'count_id': 0}]})
+
+        self.create_test_models()
+        resp = self.app.get('/api/jmodel/stats/')
+        self.assertEqual(
+            resp.get_json(),
+            {'meta': {'aliases': ['count_id']}, 'objects': [{'count_id': 1}]})
+
+    def test_json_stats(self):
+        # test that stats mixin supports getting count and keys on JSON fields
+        resp = self.app.get('/api/jmodel/keys/j_field')
+        self.assertEqual(resp.get_json(), {'keys': []})
+
+        self.create_test_models()
+        resp = self.app.get('/api/jmodel/keys/j_field')
+        keys = resp.get_json()["keys"]
+        self.assertEqual(set(keys), {'n', 'foo', 'bar'})
+
     def test_json_filtering(self):
         # test that filtering on JSON fields works
         resp = self.app.get('/api/jmodel?j_field.bar=car')

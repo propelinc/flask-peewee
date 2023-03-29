@@ -5,8 +5,9 @@ itsdangerous==1.1.0
 Jinja2==2.10.3
 markupsafe==2.0.1
 peewee==3.13.1
-psycopg2-binary==2.8.6
+psycopg2-binary==2.9.5
 pytest==6.2.4
+pytz==2023.3
 wtf-peewee==3.0.0
 WTForms==2.2.1
 flake8
