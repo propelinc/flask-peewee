@@ -226,55 +226,6 @@ class RestResource(object):
                 seen.add(i)
                 yield i
 
-    def filter_query(self, query, *args, **kwargs):
-        # normalize args and kwargs into a new expression
-        dq_node = Node()
-        if args:
-            dq_node &= reduce(operator.and_, [a.clone() for a in args])
-        if kwargs:
-            dq_node &= DQ(**kwargs)
-
-        # dq_node should now be an Expression, lhs = Node(), rhs = ...
-        q = deque([dq_node])
-        dq_joins = list()
-        while q:
-            curr = q.popleft()
-            if not isinstance(curr, Expression):
-                continue
-            for side, piece in (('lhs', curr.lhs), ('rhs', curr.rhs)):
-                if isinstance(piece, DQ):
-                    query_part, joins = self.convert_dict_to_node(piece.query)
-                    dq_joins.extend(joins)
-                    expression = reduce(operator.and_, query_part)
-                    # Apply values from the DQ object.
-                    expression._negated = piece._negated
-                    expression._alias = piece._alias
-                    setattr(curr, side, expression)
-                else:
-                    q.append(piece)
-
-        dq_node = dq_node.rhs
-
-        selected = list()
-        query = query.clone()
-        for field, rm in self.remove_dupes(dq_joins):
-            selected.append(rm)
-            if isinstance(field, ForeignKeyField):
-                lm = field.model
-                on = field
-            if isinstance(on, ModelAlias):
-                on = (rm == getattr(rm, rm._meta.primary_key.name))
-            query = query.ensure_join(lm, rm, on)
-
-        selected = self.remove_dupes(selected)
-        if query._explicit_selection:
-            query._select += query._model_shorthand(selected)
-        else:
-            selected.insert(0, query.model)
-            query = query.select(*selected)
-
-        return query.where(dq_node)
-
     def convert_dict_to_node(self, qdict):
         accum = []
         joins = []

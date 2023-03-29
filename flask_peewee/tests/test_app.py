@@ -18,6 +18,7 @@ from flask_peewee.rest import Authentication
 from flask_peewee.rest import RestAPI
 from flask_peewee.rest import RestResource
 from flask_peewee.rest import RestrictOwnerResource
+from flask_peewee.rest.stats import StatsMixin
 
 
 class FlaskApp(Flask):
@@ -160,7 +161,7 @@ class FResource(DeletableResource):
     enable_row_count = False
 
 
-class JResource(DeletableResource):
+class JResource(StatsMixin, DeletableResource):
     editable_json_fields = ('j_field', )
 
 class V2Resource(DeletableResource):
