@@ -377,7 +377,7 @@ class RestResource(object):
         serializer = self.get_serializer() if not serializer else serializer
         data = serializer.serialize_object(obj, self._fields, self._exclude)
         self.serialize_reverse_resources(obj, data)
-        return self.prepare_data(data)
+        return self.prepare_data(obj, data)
 
     def serialize_object_list(self, objects):
         s = self.get_serializer()
