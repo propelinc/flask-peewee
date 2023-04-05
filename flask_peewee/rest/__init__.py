@@ -373,13 +373,15 @@ class RestResource(object):
                 seen.add(obj._pk)
                 yield obj
 
-    def serialize_object(self, obj):
-        s = self.get_serializer()
-        return self.serialize(s, obj)
+    def serialize_object(self, obj, serializer=None):
+        serializer = self.get_serializer() if not serializer else serializer
+        data = serializer.serialize_object(obj, self._fields, self._exclude)
+        self.serialize_reverse_resources(obj, data)
+        return self.prepare_data(data)
 
     def serialize_object_list(self, objects):
         s = self.get_serializer()
-        return [self.prepare_data(obj, self.serialize(s, obj)) for obj in objects]
+        return [self.serialize_object(obj, s) for obj in objects]
 
     def serialize_query(self, query):
         if self.prefetch:
@@ -411,8 +413,6 @@ class RestResource(object):
                 data[name] = resource.serialize_reverse_resources(sub_obj, data[name])
             else:
                 data[name] = None
-
-        return data
 
     def deserialize_object(self, data, instance):
         d = self.get_deserializer()
