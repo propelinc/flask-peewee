@@ -128,7 +128,6 @@ class RestResource(object):
             field_obj = self.model._meta.fields[field_name]
             resource_obj = self.create_subresource(resource, field_obj.rel_model)
             self._resources[field_name] = resource_obj
-            self._fields.update(resource_obj._fields)
             self._exclude.update(resource_obj._exclude)
             self._filter_fields.extend([
                 '%s__%s' % (field_name, ff)
@@ -376,7 +375,7 @@ class RestResource(object):
     def serialize_object(self, obj, serializer=None):
         serializer = self.get_serializer() if not serializer else serializer
         data = serializer.serialize_object(obj, self._fields, self._exclude)
-        self.serialize_reverse_resources(obj, data)
+        self.serialize_sub_resources(obj, data, serializer)
         return self.prepare_data(obj, data)
 
     def serialize_object_list(self, objects):
@@ -393,11 +392,13 @@ class RestResource(object):
         return self.serialize_object_list(objects)
 
     def serialize(self, serializer, obj):
-        data = serializer.serialize_object(obj, self._fields, self._exclude)
-        data = self.serialize_reverse_resources(obj, data)
-        return data
+        return serializer.serialize_object(obj, self._fields, self._exclude)
 
-    def serialize_reverse_resources(self, obj, data):
+    def serialize_sub_resources(self, obj, data, serializer):
+        for name, resource in self._resources.items():
+            sub_obj = getattr(obj, name)
+            data[name] = None if sub_obj is None else resource.serialize_object(sub_obj, serializer)
+
         for name, resource in self._reverse_resources.items():
             fk_field = resource._fk_field
             if fk_field.unique:
@@ -406,13 +407,6 @@ class RestResource(object):
             else:
                 data_set = getattr(obj, fk_field.backref)
                 data[fk_field.backref] = resource.serialize_object_list(data_set)
-
-        for name, resource in self._resources.items():
-            sub_obj = getattr(obj, name, None)
-            if sub_obj is not None:
-                data[name] = resource.serialize_reverse_resources(sub_obj, data[name])
-            else:
-                data[name] = None
 
     def deserialize_object(self, data, instance):
         d = self.get_deserializer()
