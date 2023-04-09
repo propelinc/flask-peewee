@@ -122,29 +122,30 @@ class RestApiResourceTestCase(RestApiTestCase):
         # bmodel
         resp = self.app.get('/api/bmodel?ordering=id')
         self.assertEqual(resp.get_json()['objects'], [
-            {'id': self.b1.id, 'b_field': 'b1', 'a': {'id': self.a1.id, 'a_field': 'a1'}},
-            {'id': self.b2.id, 'b_field': 'b2', 'a': {'id': self.a2.id, 'a_field': 'a2'}},
+            {'id': self.b1.id, 'b_field': 'b1', 'injected': hash(self.b1), 'a': {'id': self.a1.id, 'a_field': 'a1'}},
+            {'id': self.b2.id, 'b_field': 'b2', 'injected': hash(self.b2), 'a': {'id': self.a2.id, 'a_field': 'a2'}},
         ])
 
         resp = self.app.get('/api/bmodel/%s' % self.b2.id)
         self.assertEqual(resp.get_json(), {
             'id': self.b2.id,
             'b_field': 'b2',
+            'injected': hash(self.b2),
             'a': {'id': self.a2.id, 'a_field': 'a2'},
         })
 
         # cmodel
         resp = self.app.get('/api/cmodel?ordering=id')
         self.assertEqual(resp.get_json()['objects'], [
-            {'id': self.c1.id, 'c_field': 'c1', 'b': {'id': self.b1.id, 'b_field': 'b1', 'a': {'id': self.a1.id, 'a_field': 'a1'}}},  # NOQA
-            {'id': self.c2.id, 'c_field': 'c2', 'b': {'id': self.b2.id, 'b_field': 'b2', 'a': {'id': self.a2.id, 'a_field': 'a2'}}},  # NOQA
+            {'id': self.c1.id, 'c_field': 'c1', 'b': {'id': self.b1.id, 'b_field': 'b1', 'injected': hash(self.b1), 'a': {'id': self.a1.id, 'a_field': 'a1'}}},  # NOQA
+            {'id': self.c2.id, 'c_field': 'c2', 'b': {'id': self.b2.id, 'b_field': 'b2', 'injected': hash(self.b2), 'a': {'id': self.a2.id, 'a_field': 'a2'}}},  # NOQA
         ])
 
         resp = self.app.get('/api/cmodel/%s' % self.c2.id)
         self.assertEqual(resp.get_json(), {
             'id': self.c2.id,
             'c_field': 'c2',
-            'b': {'id': self.b2.id, 'b_field': 'b2', 'a': {'id': self.a2.id, 'a_field': 'a2'}},
+            'b': {'id': self.b2.id, 'b_field': 'b2', 'injected': hash(self.b2), 'a': {'id': self.a2.id, 'a_field': 'a2'}},
         })
 
         # fmodel
@@ -291,6 +292,7 @@ class RestApiResourceTestCase(RestApiTestCase):
         self.assertEqual(json.loads(resp.data.decode('utf8')), {
             'id': b_obj.id,
             'b_field': 'by',
+            'injected': hash(b_obj),
             'a': {
                 'id': a_obj.id,
                 'a_field': 'ay',
@@ -316,6 +318,7 @@ class RestApiResourceTestCase(RestApiTestCase):
             'b': {
                 'id': b_obj.id,
                 'b_field': 'bz',
+                'injected': hash(b_obj),
                 'a': {
                     'id': a_obj.id,
                     'a_field': 'az',
@@ -383,6 +386,7 @@ class RestApiResourceTestCase(RestApiTestCase):
         self.assertEqual(json.loads(resp.data.decode('utf8')), {
             'id': b_obj.id,
             'b_field': 'b2-yyy',
+            'injected': hash(b_obj),
             'a': {
                 'id': a_obj.id,
                 'a_field': 'a2-yyy',
@@ -408,6 +412,7 @@ class RestApiResourceTestCase(RestApiTestCase):
             'b': {
                 'id': b_obj.id,
                 'b_field': 'b2-zzz',
+                'injected': hash(b_obj),
                 'a': {
                     'id': a_obj.id,
                     'a_field': 'a2-zzz',
@@ -463,6 +468,7 @@ class RestApiResourceTestCase(RestApiTestCase):
         self.assertEqual(json.loads(resp.data.decode('utf8')), {
             'id': b_obj.id,
             'b_field': 'b2-yyy',
+            'injected': hash(b_obj),
             'a': {
                 'id': a_obj.id,
                 'a_field': 'a2',
@@ -504,6 +510,7 @@ class RestApiResourceTestCase(RestApiTestCase):
         self.assertEqual(json.loads(resp.data.decode('utf8')), {
             'id': b_obj.id,
             'b_field': 'b2',
+            'injected': hash(b_obj),
             'a': {
                 'id': a_obj.id,
                 'a_field': 'a1',
