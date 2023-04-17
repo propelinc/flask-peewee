@@ -147,6 +147,10 @@ class AResource(DeletableResource):
 class BResource(DeletableResource):
     include_resources = {'a': AResource}
 
+    def prepare_data(self, obj, data):
+        data["injected"] = hash(obj)
+        return data
+
 
 class CResource(DeletableResource):
     include_resources = {'b': BResource}
