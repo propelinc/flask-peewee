@@ -497,6 +497,9 @@ class RestResource(object):
         instance.save()
         return instance
 
+    def get_object_or_404(self, pk):
+        return get_object_or_404(self.get_query(), self.pk == pk)
+
     def api_list(self):
         if not self.check_http_method():
             return self.response_forbidden()
@@ -507,7 +510,7 @@ class RestResource(object):
             return self.create()
 
     def api_detail(self, pk):
-        obj = get_object_or_404(self.get_query(), self.pk == pk)
+        obj = self.get_object_or_404(pk)
 
         if not self.check_http_method(obj):
             return self.response_forbidden()
@@ -574,7 +577,7 @@ class RestResource(object):
         if field not in self.editable_json_fields:
             return Response({'error': 'Not Found'}, 404)
 
-        obj = get_object_or_404(self.get_query(), self.pk == pk)
+        obj = self.get_object_or_404(pk)
         if not self.check_http_method(obj):
             return self.response_forbidden()
 
