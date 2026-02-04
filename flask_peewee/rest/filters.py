@@ -95,10 +95,10 @@ class PaginatedQuery(object):
     def get_pages(self):
         return int(math.ceil(float(self.query.count()) / self.paginate_by))
 
-    def has_next_page(self):
+    def has_results_on_next_page(self):
         # Running count() as done in get_pages() can be inefficient for un-indexed queries.
-        with_one_more = self.query.paginate(self.get_page(), self.paginate_by + 1)
-        return len(with_one_more) > self.paginate_by
+        results = self.query.paginate(self.get_page() + 1, self.paginate_by)
+        return len(results) > 0
 
     def get_list(self):
         return self.query.paginate(self.get_page(), self.paginate_by)
