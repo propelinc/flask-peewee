@@ -98,7 +98,7 @@ class PaginatedQuery(object):
     def has_next_page(self):
         # Running count() as done in get_pages() can be inefficient for un-indexed queries.
         with_one_more = self.query.paginate(self.get_page(), self.paginate_by + 1)
-        return with_one_more > self.paginate_by
+        return len(with_one_more) > self.paginate_by
 
     def get_list(self):
         return self.query.paginate(self.get_page(), self.paginate_by)
