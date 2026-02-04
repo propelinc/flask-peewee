@@ -5,7 +5,7 @@ requirements = ['Flask', 'werkzeug', 'jinja2', 'peewee>=3.0.0', 'wtforms', 'wtf-
 
 setup(
     name='flask-peewee',
-    version='3.0.5+propel',
+    version='3.0.6+propel',
     url='http://github.com/propelinc/flask-peewee/',
     license='MIT',
     author='Charles Leifer',
