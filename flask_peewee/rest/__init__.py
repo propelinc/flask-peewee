@@ -615,7 +615,7 @@ class RestResource(object):
         if current_page > 1:
             request_arguments[var] = current_page - 1
             previous_page = url_for(self.get_url_name('api_list'), **request_arguments)
-        if current_page < paginated_query.get_pages():
+        if paginated_query.has_results_on_next_page():
             request_arguments[var] = current_page + 1
             next_page = url_for(self.get_url_name('api_list'), **request_arguments)
 
